@@ -29,6 +29,7 @@ Choose the iOS MobileRTC Stack option once you have signed in, and under the cre
 Zoom provides 2 ways for you to use the MobileRTC Stack functions. You can authenticate yourself as just an API user or also a Zoom member (which requires the user to sign in to their Zoom account). You **MUST** always first authenticate yourself as an API user. Afterward, you can provide the user with an option to authenticate as a user.
 
 **Zoom API Authentication (Required)**
+
 If your app requires the ability to start or create calls without the user signing in, you first need to obtain the API `userID` and `userToken` values.
 
 Sign in to the Zoom developer site again and navigate to the [REST API playground](https://zoom.us/developer/api/playground) page. Note that your REST credentials in the credentials tab and your MobileRTC credentials from earlier are **NOT** the same. On the playground page, change the `API Endpoint` to `https://api.zoom.us/v1/user/getbyemail` and the `User Email Address` to your email you used to create your Zoom developer account.
