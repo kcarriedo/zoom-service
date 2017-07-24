@@ -11,6 +11,8 @@ This project tries to make integrations with the [Zoom SDK](https://zoom.us/deve
 ## Basics
 **Download the `ZoomService.swift` file and add it into your app manually.** ZoomService currently utilizes the [singleton pattern](https://sourcemaking.com/design_patterns/singleton), so it is able to be referenced from anywhere in your app.
 
+Your app must first already have MobileRTC installed. For instructions on how to install MobileRTC into your app, Follow the `Deployment` section from the [Zoom documentation](https://github.com/zoom/zoom-sdk-ios/blob/master/doc/Zoom%20iOS%20MobileRTC.pdf).
+
 ## Sample App
 There is a sample app with ZoomService integrated available on [GitHub](github.com/george-lim). Feel free to download the app and explore the usage of ZoomService.
 
@@ -29,11 +31,11 @@ Zoom provides 2 ways for you to use the MobileRTC Stack functions. You can authe
 **Zoom API Authentication (Required)**
 If your app requires the ability to start or create calls without the user signing in, you first need to obtain the API `userID` and `userToken` values.
 
-Sign in to the zoom developer site again and navigate to the [REST API playground](https://zoom.us/developer/api/playground) page. Note that your REST credentials in the credentials tab and your MobileRTC credentials from earlier are **NOT** the same. On the playground page, change the `API Endpoint` to `https://api.zoom.us/v1/user/getbyemail` and the `User Email Address` to your email you used to create your Zoom developer account.
+Sign in to the Zoom developer site again and navigate to the [REST API playground](https://zoom.us/developer/api/playground) page. Note that your REST credentials in the credentials tab and your MobileRTC credentials from earlier are **NOT** the same. On the playground page, change the `API Endpoint` to `https://api.zoom.us/v1/user/getbyemail` and the `User Email Address` to your email you used to create your Zoom developer account.
 
 Press the `Send API Request` and scroll down until you see the `Response` array. You want to copy the value for `id` and `token` and paste them as the `userID` and `userToken` strings in the ZoomService file respectively.
 
-What we are doing is sending a REST API call through the zoom developer REST API service to fetch our API ID and token values as if we are an API user. Using this data, we can authorize ourselves in our app as an API user.
+What we are doing is sending a REST API call through the Zoom developer REST API service to fetch our API ID and token values as if we are an API user. Using this data, we can authorize ourselves in our app as an API user.
 
 Finally, in your `AppDelegate.swift` file, add the line `ZoomService.sharedInstance.authenticateAPI()` in your `didFInishLaunchingWithOptions` function and you should be set.
 
