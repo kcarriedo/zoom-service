@@ -9,7 +9,7 @@ This project tries to make integrations with the [Zoom SDK](https://zoom.us/deve
 # Installation
 
 ## Basics
-**Download the (`ZoomService.swift`) file and add it into your app manually.** ZoomService currently utilizes the [singleton pattern](https://sourcemaking.com/design_patterns/singleton), so it is able to be referenced from anywhere in your app
+**Download the `ZoomService.swift` file and add it into your app manually.** ZoomService currently utilizes the [singleton pattern](https://sourcemaking.com/design_patterns/singleton), so it is able to be referenced from anywhere in your app.
 
 ## Sample App
 There is a sample app with ZoomService integrated available on [GitHub](github.com/george-lim). Feel free to download the app and explore the usage of ZoomService.
