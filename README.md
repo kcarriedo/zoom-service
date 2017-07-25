@@ -9,19 +9,20 @@ This project tries to make integrations with the [Zoom SDK](https://zoom.us/deve
 # Installation
 
 ## Basics
-**Download the `ZoomService.swift` file and add it into your app manually.** ZoomService currently utilizes the [singleton pattern](https://sourcemaking.com/design_patterns/singleton), so it is able to be referenced from anywhere in your app.
+**Download the `ZoomService.swift` file and add it into your app manually.** Zoom Service currently utilizes the [singleton pattern](https://sourcemaking.com/design_patterns/singleton), so it is able to be referenced from anywhere in your app.
 
-Your app must first already have MobileRTC installed. For instructions on how to install MobileRTC into your app, Follow the `Deployment` section from the [Zoom documentation](https://github.com/zoom/zoom-sdk-ios/blob/master/doc/Zoom%20iOS%20MobileRTC.pdf).
+Your app must first already have MobileRTC installed. For instructions on how to install MobileRTC into your app, Follow the [Zoom MobileRTC guide](https://github.com/george-lim/zoom-sdk-guide).
 
 ## Sample App
-There is a sample app with ZoomService integrated available on [GitHub](https://github.com/george-lim/zoom-service-sample-app). Feel free to download the app and explore the usage of ZoomService.
+There is a sample app with Zoom Service already integrated available on [GitHub](https://github.com/george-lim/zoom-service-sample-app). Feel free to download the app and explore the usage of Zoom Service.
 
 # Usage
+Open up Xcode and launch the sample app. Navigate to `ZoomService.swift`. We need to fill in the data required by the ZoomAPI struct.
 
 ## MobileRTC Authentication
 If you haven't already, [sign up](https://zoom.us/developer) for a Zoom Developer account which provides access to the Zoom REST API, Desktop SDKs, and most importantly, the MobileRTC stacks.
 
-Choose the iOS MobileRTC Stack option once you have signed in, and under the credential tab, copy the APP Key and APP Secret into the `appKey` and `appSecret` into the ZoomService `ZoomAPI` struct. The direct link to the credentials page is found [here](https://zoom.us/developer/ios/credential).
+Choose the iOS MobileRTC Stack option once you have signed in, and under the credential tab, copy the APP Key and APP Secret into the `appKey` and `appSecret` into the `ZoomAPI` struct. The direct link to the credentials page is found [here](https://zoom.us/developer/ios/credential).
 
 Finally, in your `AppDelegate.swift` file, add the line `ZoomService.sharedInstance.authenticateSDK()` in your `didFinishLaunchingWithOptions` function and you should be set.
 
@@ -34,9 +35,9 @@ Zoom provides 2 ways for you to use the MobileRTC Stack functions. You can authe
 
 If your app requires the ability to start or create calls without the user signing in, you first need to obtain the API `userID` and `userToken` values.
 
-Sign in to the Zoom developer site again and navigate to the [REST API playground](https://zoom.us/developer/api/playground) page. Note that your REST credentials in the credentials tab and your MobileRTC credentials from earlier are **NOT** the same. On the playground page, change the `API Endpoint` to `https://api.zoom.us/v1/user/getbyemail` and the `User Email Address` to your email you used to create your Zoom developer account.
+Sign in to the Zoom developer site again and navigate to the [REST API playground](https://zoom.us/developer/api/playground) page. Note that your REST API credentials in the credentials tab and your MobileRTC credentials from earlier are **NOT** the same. On the playground page, change the `API Endpoint` to `https://api.zoom.us/v1/user/getbyemail` and the `User Email Address` to your email you used to create your Zoom developer account.
 
-Press the `Send API Request` and scroll down until you see the `Response` array. You want to copy the value for `id` and `token` and paste them as the `userID` and `userToken` strings in the ZoomService file respectively.
+Press the `Send API Request` and scroll down until you see the `Response` array. Copy the value for `id` and `token` and paste them as the `userID` and `userToken` strings in the `ZoomAPI` struct respectively.
 
 What we are doing is sending a REST API call through the Zoom developer REST API service to fetch our API ID and token values as if we are an API user. Using this data, we can authorize ourselves in our app as an API user.
 
@@ -50,7 +51,7 @@ To authenticate the user as a Zoom member, you are required to implement your ow
 
 To join a call, simply execute `ZoomService.sharedInstance.joinMeeting(number: String = ZoomAPI.defaultName, password: String = "")` in your code. Neither parameter is required. The MobileRTC framework will then take over and present a view on top of your app which will launch the call.
 
-Likewise, to start a call, simply execute `ZoomService.sharedInstance.startMeeting(name: String = ZoomAPI.defaultName, number: Int = -1, password: String = "")` in your code. If you specify a meeting number, ZoomService will attempt to create a call for the number specified, and will return an error if someone is already using the meeting number. None of the parameters are required.
+Likewise, to start a call, simply execute `ZoomService.sharedInstance.startMeeting(name: String = ZoomAPI.defaultName, number: Int = -1, password: String = "")` in your code. If you specify a meeting number, Zoom Service will attempt to create a call for the number specified, and will return an error if someone is already using the meeting number. None of the parameters are required.
 
 ## Meeting Scheduling / User Account Management
 
