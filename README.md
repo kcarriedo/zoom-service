@@ -14,7 +14,7 @@ This project tries to make integrations with the [Zoom SDK](https://zoom.us/deve
 Your app must first already have MobileRTC installed. For instructions on how to install MobileRTC into your app, Follow the `Deployment` section from the [Zoom documentation](https://github.com/zoom/zoom-sdk-ios/blob/master/doc/Zoom%20iOS%20MobileRTC.pdf).
 
 ## Sample App
-There is a sample app with ZoomService integrated available on [GitHub](github.com/george-lim). Feel free to download the app and explore the usage of ZoomService.
+There is a sample app with ZoomService integrated available on [GitHub](https://github.com/george-lim/zoom-service-sample-app). Feel free to download the app and explore the usage of ZoomService.
 
 # Usage
 
