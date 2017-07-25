@@ -41,7 +41,8 @@ class ZoomService: NSObject, MobileRTCAuthDelegate {
   var isUserAuthenticated = false
   var userMeetings: [ZoomMeeting] = []
   
-  func authenticateAPI() {
+  // Authenticates user to use MobileRTC.
+  func authenticateSDK() {
     guard let zoomSDK = MobileRTC.shared() else { return }
     zoomSDK.mobileRTCDomain = ZoomAPI.domain
     
@@ -52,6 +53,7 @@ class ZoomService: NSObject, MobileRTCAuthDelegate {
     authService.sdkAuth()
   }
   
+  // Handled by MobileRTCAuthDelegate, returns result of authenticateSDK function call.
   func onMobileRTCAuthReturn(_ returnValue: MobileRTCAuthError) {
     guard returnValue == MobileRTCAuthError_Success else {
       print("Zoom: API authentication task failed, error code: \(returnValue.rawValue)")
@@ -67,6 +69,7 @@ class ZoomService: NSObject, MobileRTCAuthDelegate {
 
 extension ZoomService {
   
+  // Join a Zoom meeting.
   func joinMeeting(name: String = ZoomAPI.defaultName, number: Int, password: String = "") {
     guard isAPIAuthenticated || isUserAuthenticated, let meetingService = MobileRTC.shared().getMeetingService() else { return }
     
@@ -89,6 +92,7 @@ extension ZoomService {
     print("Zoom: Join meeting task completed.")
   }
   
+  // Start a Zoom meeting immediately.
   func startMeeting(name: String = ZoomAPI.defaultName, number: Int = -1, password: String = "") {
     guard isAPIAuthenticated || isUserAuthenticated, let meetingService = MobileRTC.shared().getMeetingService() else { return }
     
@@ -122,11 +126,13 @@ extension ZoomService {
 
 extension ZoomService: MobileRTCPremeetingDelegate {
   
+  // Authenticate user as a Zoom member.
   func login(email: String, password: String) {
     guard isAPIAuthenticated, let authService = MobileRTC.shared().getAuthService() else { return }
     authService.login(withEmail: email, password: password)
   }
   
+  // Handled by MobileRTCPremeetingDelegate, returns result of login function call.
   func onMobileRTCLoginReturn(_ returnValue: Int) {
     guard returnValue == 0 else {
       print("Zoom (User): Login task failed, error code: \(returnValue)")
@@ -141,11 +147,13 @@ extension ZoomService: MobileRTCPremeetingDelegate {
     print("Zoom (User): Login task completed.")
   }
   
+  // Logout as Zoom member if user is authenticated as Zoom member.
   func logout() {
     guard isUserAuthenticated, let authService = MobileRTC.shared().getAuthService() else { return }
     authService.logoutRTC()
   }
   
+  // Handled by MobileRTCPremeetingDelegate, returns result of logout function call.
   func onMobileRTCLogoutReturn(_ returnValue: Int) {
     guard returnValue == 0 else {
       print("Zoom (User): Logout task failed, error code: \(returnValue)")
@@ -157,6 +165,7 @@ extension ZoomService: MobileRTCPremeetingDelegate {
     print("Zoom (User): Logout task completed.")
   }
   
+  // Handled by MobileRTCPremeetingDelegate, prints a list of meetings the Zoom member has after scheduling, editing, or deleting a meeting.
   func sinkListMeeting(_ result: Int, withMeetingItems array: [Any]!) {
     guard result == 0 else {
       print("Zoom (User): List meeting task failed, error code: \(result)")
@@ -218,6 +227,7 @@ extension ZoomService: MobileRTCPremeetingDelegate {
     print()
   }
   
+  // Schedule a Zoom meeting as a Zoom member.
   func scheduleMeeting(topic: String, startTime: Date, timeZone: TimeZone = NSTimeZone.local, durationInMinutes: TimeInterval) {
     guard isUserAuthenticated, let preMeetingService = MobileRTC.shared().getPreMeetingService(), let meeting = preMeetingService.createMeetingItem() else { return }
     meeting.setMeetingTopic(topic)
@@ -229,6 +239,7 @@ extension ZoomService: MobileRTCPremeetingDelegate {
     preMeetingService.destroy(meeting)
   }
   
+  // Handled by MobileRTCPremeetingDelegate, returns result of scheduleMeeting function call.
   func sinkSchedultMeeting(_ result: Int) {
     guard result == 0 else {
       print("Zoom (User): Schedule meeting task failed, error code: \(result)")
@@ -238,10 +249,12 @@ extension ZoomService: MobileRTCPremeetingDelegate {
     print("Zoom (User): Schedule meeting task completed.")
   }
   
+  // Edit an existing Zoom meeting as a Zoom member by providing a ZoomMeeting object.
   func editMeeting(_ zoomMeeting: ZoomMeeting, topic: String? = nil, startTime: Date? = nil, timeZone: TimeZone? = nil, durationInMinutes: TimeInterval? = nil) {
     editMeeting(number: zoomMeeting.number, topic: topic, startTime: startTime, timeZone: timeZone, durationInMinutes: durationInMinutes)
   }
   
+  // Edit an existing Zoom meeting as a Zoom member by providing a Zoom meeting number.
   func editMeeting(number: Int, topic: String? = nil, startTime: Date? = nil, timeZone: TimeZone? = nil, durationInMinutes: TimeInterval? = nil) {
     guard isUserAuthenticated, let preMeetingService = MobileRTC.shared().getPreMeetingService(), let meeting = preMeetingService.getMeetingItem(byNumber: UInt(number)) else { return }
     
@@ -264,6 +277,7 @@ extension ZoomService: MobileRTCPremeetingDelegate {
     preMeetingService.editMeeting(meeting)
   }
   
+  // Handled by MobileRTCPremeetingDelegate, returns result of editMeeting function call.
   func sinkEditMeeting(_ result: Int) {
     guard result == 0 else {
       print("Zoom (User): Edit meeting task failed, error code: \(result)")
@@ -273,15 +287,18 @@ extension ZoomService: MobileRTCPremeetingDelegate {
     print("Zoom (User): Edit meeting task completed.")
   }
   
+  // Delete an existing event as a Zoom member by providing a ZoomMeeting object.
   func deleteMeeting(_ zoomMeeting: ZoomMeeting) {
     deleteMeeting(number: zoomMeeting.number)
   }
   
+  // Delete an existing event as a Zoom member by providing a Zoom meeting number.
   func deleteMeeting(number: Int) {
     guard isUserAuthenticated, let preMeetingService = MobileRTC.shared().getPreMeetingService(), let meeting = preMeetingService.getMeetingItem(byNumber: UInt(number)) else { return }
     preMeetingService.deleteMeeting(meeting)
   }
   
+  // Handled by MobileRTCPremeetingDelegate, returns result of deleteMeeting function call.
   func sinkDeleteMeeting(_ result: Int) {
     guard result == 0 else {
       print("Zoom (User): Delete meeting task failed, error code: \(result)")
