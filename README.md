@@ -1,7 +1,7 @@
 Zoom Service
 ===============
 
-This project tries to make integrations with the [Zoom SDK](https://zoom.us/developer) on Swift easier by providing all the properly configured functions to the user to use with their project.
+This project tries to make integrations with the [Zoom SDK](https://zoom.us/developer) on Swift easier by providing all the properly configured functions for the user to use with their project.
 
 1. [Installation](#installation)
 1. [Usage](#usage)
@@ -9,15 +9,15 @@ This project tries to make integrations with the [Zoom SDK](https://zoom.us/deve
 # Installation
 
 ## Basics
-**Download the `ZoomService.swift` file and add it into your app manually.** Zoom Service currently utilizes the [singleton pattern](https://sourcemaking.com/design_patterns/singleton), so it is able to be referenced from anywhere in your app.
+**Download the `ZoomService.swift` file and add it to your app manually.** Zoom Service currently utilizes the [singleton pattern](https://sourcemaking.com/design_patterns/singleton), so it can be referenced from anywhere in your app.
 
-Your app must first already have MobileRTC installed. For instructions on how to install MobileRTC into your app, Follow the [Zoom MobileRTC guide](https://github.com/george-lim/zoom-sdk-guide).
+Your app must first already have MobileRTC installed. For instructions on how to install MobileRTC into your app, follow my [Zoom MobileRTC guide](https://github.com/george-lim/zoom-sdk-guide).
 
-## Sample App
-There is a sample app with Zoom Service already integrated available on [GitHub](https://github.com/george-lim/zoom-service-sample-app). Feel free to download the app and explore the usage of Zoom Service.
+## Example App
+There is an example app provided with Zoom Service already integrated. Feel free to first explore Zoom Service through the example app before integrating it into your own app. Please read the `README.md` inside the example app before compiling.
 
 # Usage
-Open up Xcode and launch the sample app. Navigate to `ZoomService.swift`. We need to fill in the data required by the ZoomAPI struct.
+Open up Xcode and launch the sample app. Navigate to `ZoomService.swift`. You need to fill in the data required by the ZoomAPI struct.
 
 ## MobileRTC Authentication
 If you haven't already, [sign up](https://zoom.us/developer) for a Zoom Developer account which provides access to the Zoom REST API, Desktop SDKs, and most importantly, the MobileRTC stacks.
@@ -26,14 +26,13 @@ Choose the iOS MobileRTC Stack option once you have signed in, and under the cre
 
 Finally, in your `AppDelegate.swift` file, add the line `ZoomService.sharedInstance.authenticateSDK()` in your `didFinishLaunchingWithOptions` function and you should be set.
 
-**Note: The APP Key and APP Secret are your credentials to authorize your use of the MobileRTC framework in your app. As of now, you still cannot start or join calls with until you are authorized as a Zoom API user or a Zoom member.**
+**Note: The APP Key and APP Secret are your credentials to authorize your use of the MobileRTC framework in your app. As of now, you still cannot start or join calls with Zoom Service until you are authorized as a Zoom API user or a Zoom member.**
 
 ## Zoom Authentication
-Zoom provides 2 ways for you to use the MobileRTC Stack functions. You can authenticate yourself as just an API user or as also a Zoom member (which requires the user to sign in to their Zoom account). You **MUST** always first authenticate yourself as an API user. Afterward, you can provide the user with an option to authenticate as a user.
+In order to use Zoom, the app must first authenticate itself as an API user. Afterward, if you would like to have users authenticate themselves through their Zoom accounts, they can optionally sign in and Zoom authenticate the user as well.
 
 **Zoom API Authentication (Required)**
-
-If your app requires the ability to start or create calls without the user signing in, you first need to obtain the API `userID` and `userToken` values.
+If your app requires the capability to start or create calls without the user signing in, you first need to obtain the API `userID` and `userToken` values.
 
 Sign in to the Zoom developer site again and navigate to the [REST API playground](https://zoom.us/developer/api/playground) page. Note that your REST API credentials in the credentials tab and your MobileRTC credentials from earlier are **NOT** the same. On the playground page, change the `API Endpoint` to `https://api.zoom.us/v1/user/getbyemail` and the `User Email Address` to your email you used to create your Zoom developer account.
 
@@ -42,11 +41,9 @@ Press the `Send API Request` and scroll down until you see the `Response` array.
 What we are doing is sending a REST API call through the Zoom developer REST API service to fetch our API ID and token values as if we are an API user. Using this data, we can authorize ourselves in our app as an API user.
 
 **Zoom Member Authentication (Optional)**
-
-To authenticate the user as a Zoom member, you are required to implement your own view flow to retrieve the user's username and password values. After you have received them, call the `ZoomService.sharedInstance.login(email: String, password: String)` function in your code to authenticate the user.
+To authenticate the user as a Zoom member, you are required to implement your own app flow to retrieve the user's username and password values. After you have received them, call the `ZoomService.sharedInstance.login(email: String, password: String)` function in your code to authenticate the user.
 
 ## Starting / Joining calls
-
 **These 2 features are available to both authentication types.** Please note that API authenticated users can only utilize these 2 core functions in the MobileRTC Stack. This means that scheduling calls ahead of time is **IMPOSSIBLE** for an API user without using a separate Zoom REST API call which is outside the scope of MobileRTC. So to clarify, API authenticated users can only start a call (immediately) or join a call.
 
 To join a call, simply execute `ZoomService.sharedInstance.joinMeeting(number: String = ZoomAPI.defaultName, password: String = "")` in your code. Neither parameter is required. The MobileRTC framework will then take over and present a view on top of your app which will launch the call.
