@@ -1,4 +1,10 @@
 Zoom Service
+<br>
+![GitHub downloads](https://img.shields.io/github/downloads/george-lim/zoom-service/total.svg)
+[![GitHub release](https://img.shields.io/github/release/george-lim/zoom-service.svg)](https://github.com/george-lim/zoom-service/releases)
+[![GitHub issues](https://img.shields.io/github/issues/george-lim/zoom-service.svg)](https://github.com/george-lim/zoom-service/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/george-lim/zoom-service.svg)](https://github.com/george-lim/zoom-service/pulls)
+[![license](https://img.shields.io/github/license/george-lim/zoom-service.svg)](https://github.com/george-lim/zoom-service/blob/master/LICENSE)
 ===============
 
 This project tries to make integrations with the [Zoom SDK](https://zoom.us/developer) on Swift easier by providing all the properly configured functions for the user to use with their project.
